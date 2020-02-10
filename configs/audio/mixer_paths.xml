@@ -2073,6 +2073,10 @@
         <path name="handset-mic" />
     </path>
 
+    <path name="external-mic">
+        <path name="headset-mic" />
+    </path>
+
     <path name="hdmi-tx">
         <path name="handset-mic" />
     </path>

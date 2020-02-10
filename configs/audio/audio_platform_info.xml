@@ -150,6 +150,8 @@
 	<device name="SND_DEVICE_IN_VOICE_TTY_FULL_HEADSET_MIC" interface="INT3_MI2S_TX"/>
 	<device name="SND_DEVICE_IN_VOICE_TTY_VCO_HANDSET_MIC" interface="INT3_MI2S_TX"/>
 	<device name="SND_DEVICE_IN_VOICE_TTY_HCO_HEADSET_MIC" interface="INT3_MI2S_TX"/>
+	<device name="SND_DEVICE_IN_VOICE_REC_EXTERNAL_MIC" interface="INT3_MI2S_TX"/>
+	<device name="SND_DEVICE_IN_VOICE_REC_HEADSET_MIC" interface="INT3_MI2S_TX"/>
 	<device name="SND_DEVICE_IN_VOICE_REC_MIC" interface="INT3_MI2S_TX"/>
 	<device name="SND_DEVICE_IN_VOICE_REC_MIC_NS" interface="INT3_MI2S_TX"/>
 	<device name="SND_DEVICE_IN_VOICE_REC_DMIC_STEREO" interface="INT3_MI2S_TX"/>
