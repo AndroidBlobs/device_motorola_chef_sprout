@@ -17,7 +17,7 @@ PRODUCT_MODEL := motorola one power
 PRODUCT_GMS_CLIENTID_BASE := android-motorola
 TARGET_VENDOR := motorola
 TARGET_VENDOR_PRODUCT_NAME := chef_sprout
-PRODUCT_BUILD_PROP_OVERRIDES += PRIVATE_BUILD_DESC=" 10 QPT30.61-18 18a03 release-keys"
+PRODUCT_BUILD_PROP_OVERRIDES += PRIVATE_BUILD_DESC=" 10 QPTS30.61-18-2 a03ba release-keys"
 
 # Set BUILD_FINGERPRINT variable to be picked up by both system and vendor build.prop
-BUILD_FINGERPRINT := motorola/chef_retail/chef_sprout:10/QPT30.61-18/18a03:user/release-keys
+BUILD_FINGERPRINT := motorola/chef_retail/chef_sprout:10/QPTS30.61-18-2/a03ba:user/release-keys
