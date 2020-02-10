@@ -1,6 +1,6 @@
 #! /vendor/bin/sh
 
-# Copyright (c) 2013-2014, 2019 The Linux Foundation. All rights reserved.
+# Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -42,11 +42,17 @@ case "$baseband" in
     if [ -n "$rild_status" ] || [ -n "$vendor_rild_status" ]; then
       stop ril-daemon
       stop vendor.ril-daemon
+      start vendor.ipacm
     fi
 esac
 
 case "$baseband" in
-    "msm" | "csfb" | "svlte2a" | "mdm" | "mdm2" | "sglte" | "sglte2" | "dsda2" | "unknown" | "dsda3" | "sdm" | "sdx" | "sm6")
+    "msm" | "csfb" | "svlte2a" | "mdm" | "mdm2" | "sglte" | "sglte2" | "dsda2" | "unknown" | "dsda3")
+    start vendor.qmuxd
+esac
+
+case "$baseband" in
+    "msm" | "csfb" | "svlte2a" | "mdm" | "mdm2" | "sglte" | "sglte2" | "dsda2" | "unknown" | "dsda3" | "sdm" | "sdx")
 
     if [ -f /vendor/firmware_mnt/verinfo/ver_info.txt ]; then
         modem=`cat /vendor/firmware_mnt/verinfo/ver_info.txt |
@@ -96,7 +102,8 @@ case "$baseband" in
             start vendor.ril-daemon
         fi
     else
-        qcrild_status=false
+        start ril-daemon
+        start vendor.ril-daemon
     fi
 
     # Get ril-daemon status again to ensure that we have latest info
@@ -106,6 +113,8 @@ case "$baseband" in
     if [[ -z "$rild_status" || "$rild_status" = "stopped" ]] && [[ -z "$vendor_rild_status" || "$vendor_rild_status" = "stopped" ]]; then
       start vendor.qcrild
     fi
+    start vendor.ipacm-diag
+    start vendor.ipacm
     case "$baseband" in
         "svlte2a" | "csfb")
           start qmiproxy
@@ -141,12 +150,16 @@ case "$baseband" in
         "tethered")
             start vendor.dataqti
             start vendor.dataadpl
+            start vendor.port-bridge
             ;;
         "concurrent")
             start vendor.dataqti
             start vendor.dataadpl
+            start vendor.netmgrd
+            start vendor.port-bridge
             ;;
         *)
+            start vendor.netmgrd
             ;;
     esac
 esac
