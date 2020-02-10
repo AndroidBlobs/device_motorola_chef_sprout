@@ -1,4 +1,3 @@
-
 #
 # from device/qcom/sdm660_64/system.prop
 #
@@ -24,13 +23,13 @@ debug.sf.latch_unsignaled=1
 persist.hwc.mdpcomp.enable=true
 debug.gralloc.enable_fb_ubwc=1
 dalvik.vm.heapsize=36m
+dev.pm.dyn_samplingrate=1
 persist.demo.hdmirotationlock=false
+#Disable Skip Validate
+sdm.debug.disable_skip_validate=1
 
 #Property to enable display default color mode
 vendor.display.enable_default_color_mode=1
-
-#Property to enable color management in sf
-ro.surface_flinger.use_color_management=true
 
 # Display Properties as per treble compliance
 vendor.gralloc.enable_fb_ubwc=1
@@ -174,9 +173,16 @@ persist.sys.wfd.virtual=0
 # system prop for NFC DT
 ro.nfc.port=I2C
 
+#property for vendor specific library
+ro.vendor.at_library=libqti-at.so
+
+#min/max cpu in core control
+ro.vendor.qti.core_ctl_min_cpu=2
+ro.vendor.qti.core_ctl_max_cpu=4
 
 #property to enable DS2 dap
 audio.dolby.ds2.enabled=false
+
 #hwui properties
 ro.hwui.texture_cache_size=72
 ro.hwui.layer_cache_size=48
@@ -195,6 +201,9 @@ persist.vendor.radio.atfwd.start=true
 
 #property to enable VDS WFD solution
 persist.hwc.enable_vds=1
+
+#Increase cached app limit
+ro.vendor.qti.sys.fw.bg_apps_limit=60
 
 #Settings to enable sensors
 #Device Orientation sensor
@@ -217,10 +226,6 @@ vendor.camera.aux.packagelist=org.codeaurora.snapcam
 
 persist.vendor.camera.validate.aux=1
 
-#Whitelisting the below packages
-persist.vendor.camera.privapp.list=org.codeaurora.snapcam
-persist.camera.privapp.list=org.codeaurora.snapcam
-
 #disable UBWC for camera
 persist.vendor.camera.preview.ubwc=0
 
@@ -235,6 +240,5 @@ persist.vendor.btstack.a2dp_offload_cap=sbc-aptx-aptxhd-aac
 
 # enable IZat OptInApp overlay
 persist.vendor.overlay.izat.optin=rro
-# end of device/qcom/sdm660_64/system.prop
 
 #

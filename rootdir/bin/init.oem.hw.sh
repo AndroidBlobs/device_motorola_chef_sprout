@@ -125,16 +125,9 @@ procfs_wait_for_device()
 	local status
 	local mpi
 	local IFS=' '
-	local device_timeout_count=0
 	while [ ! -f $hw_mp/reload ] || [ ! -f $config_mp/reload ]; do
 		notice "waiting for devices"
 		sleep 1;
-		if [ "$device_timeout_count" -eq "10" ];then
-			notice "waiting for devices timeout"
-			eval $__result=""
-			return
-		fi
-		device_timeout_count=$(($device_timeout_count + 1))
         done
 	for mpi in $hw_mp $config_mp; do
 		status=$(cat $mpi/reload)
@@ -281,8 +274,8 @@ populate_utags_auto_value()
 	local keyname
 	local value
 
-	radio_value=$(getprop 'ro.boot.radio')
-	if [ "${radio_value:0:2}" == "0x" ] || [ "$radio_value" -gt 0 ]; then
+	radio_value=$(getprop 'ro.vendor.hw.radio')
+	if [ "${radio_value:0:2}" == "0x" ]; then
 		hwid=$radio_value
 	else
 		get_hwid_by_radio_name hwid $radio_value
@@ -364,7 +357,7 @@ set_ro_hw_properties()
 	for hwtag in $(find $hw_mp -name '.system'); do
 		debug "path $hwtag has '.system' in its name"
 		prop_prefix=$(cat $hwtag/ascii)
-		verify=${prop_prefix%.}
+		verify=${prefix%.}
 		# esure property ends with '.'
 		if [ "$prop_prefix" == "$verify" ]; then
 			prop_prefix="$prop_prefix."
@@ -375,7 +368,7 @@ set_ro_hw_properties()
 		utag_name=${utag_path##*/}
 		utag_value=$(cat $utag_path/ascii)
 		setprop $prop_prefix$utag_name "$utag_value"
-		notice "$prop_prefix$utag_name='$utag_value'"
+		notice "ro.vendor.hw.$utag_name='$utag_value'"
 	done
 }
 
@@ -410,13 +403,11 @@ smart_value()
 	eval $__result='$value'
 }
 
-url_style_off()
+whitespace_off()
 {
 	local __arg=$1
 	local value=$2
 	value=$(echo $value | sed 's/%20/ /g')
-	value=$(echo $value | sed 's/%28/\(/g')
-	value=$(echo $value | sed 's/%29/\)/g')
 	eval $__arg='$value'
 }
 
@@ -428,13 +419,13 @@ match()
 	local fs_value
 	local mvalue
 	local matched
-	url_style_off mapping $1
+	whitespace_off mapping $1
 	debug "match mapping='$mapping'"
 	# put '\"' around $mapping to ensure XML
 	# parser takes it as a single argument
 	for mline in $(exec_parser \"$mapping\"); do
 		get_tag_data mtag mvalue $mline
-		url_style_off mvalue $mvalue
+		whitespace_off mvalue $mvalue
 		[ "$matched" == "false" ] && continue
 		# obtain value based on data source: utag, property or file
 		smart_value $mtag fs_value
@@ -522,16 +513,16 @@ process_mappings()
 		get_attr_data_by_name pexport "export" $pline
 		get_attr_data_by_name pdefault "default" $pline
 		get_attr_data_by_name pappend "append" $pline
-		[ "$pname" ] && url_style_off pname $pname && debug "name='$pname'"
-		[ "$pexport" ] && url_style_off pexport $pexport && debug "export='$pexport'"
-		[ "$pdefault" ] && url_style_off pdefault $pdefault && debug "default='$pdefault'"
-		[ "$pappend" ] && url_style_off pappend $pappend && debug "append='$pappend'"
+		[ "$pname" ] && whitespace_off pname $pname && debug "name='$pname'"
+		[ "$pexport" ] && whitespace_off pexport $pexport && debug "export='$pexport'"
+		[ "$pdefault" ] && whitespace_off pdefault $pdefault && debug "default='$pdefault'"
+		[ "$pappend" ] && whitespace_off pappend $pappend && debug "append='$pappend'"
 		# add 'subsection' to permanent parameters
 		add_device_params $subsection
 		# call itself here to handle nonamed subsection, like quirks
 		[ -z "$pname" ] && [ -z "$pexport" ] && [ -z "$pdefault" ] && [ -z "$pappend" ] && process_mappings && continue
 		find_match matched_val
-		[ "$matched_val" ] && url_style_off matched_val $matched_val
+		[ "$matched_val" ] && whitespace_off matched_val $matched_val
 		# append_match handles OEM overrides, thus has to be called even with empty value
 		[ "$pappend" ] && append_match $pappend "$matched_val"
 		if [ "$matched_val" ]; then
@@ -571,11 +562,6 @@ if [ ! -z "$dead_touch" ]; then
 	notice "property [$touch_status_prop] set to [dead]"
 	set_reboot_counter 1
 	return 0
-fi
-
-if [ -f /vendor/lib/modules/utags.ko ]; then
-	notice "loading utag driver"
-	insmod /vendor/lib/modules/utags.ko
 fi
 
 notice "checking integrity"
