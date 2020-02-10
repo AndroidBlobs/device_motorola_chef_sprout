@@ -49,6 +49,7 @@ PRODUCT_PROPERTY_OVERRIDES +=  \
     persist.vendor.radio.custom_ecc=1 \
     persist.vendor.radio.data_con_rprt=1 \
     persist.vendor.radio.dfr_mode_set=1 \
+    persist.vendor.radio.enable_temp_dds=true \
     persist.vendor.radio.eri64_as_home=1 \
     persist.vendor.radio.fi_supported=0 \
     persist.vendor.radio.flexmap_type=none \
