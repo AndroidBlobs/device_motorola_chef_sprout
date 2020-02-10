@@ -433,7 +433,6 @@
         <int name="maxSubjectLength" value="80" />
         <int name="recipientLimit" value="20" />
         <int name="smsToMmsTextThreshold" value="6" />
-        <boolean name="smsUsesSimpleCharactersOnly" value="true" />
         <boolean name="moto_enable_service_dialing_number" value="true" />
     </carrier_config>
     <carrier_config mcc="338">

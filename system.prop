@@ -56,6 +56,9 @@ media.settings.xml=/vendor/etc/media_profiles_vendor.xml
 vendor.mm.enable.qcom_parser=13631487
 persist.mm.enable.prefetch=true
 
+#prefer HW codec over SW for thumbnail
+media.stagefright.thumbnail.prefer_hw_codecs=true
+
 #parser input buffer size(256kb) in byte stream mode
 audio.parser.ip.buffer.size=262144
 

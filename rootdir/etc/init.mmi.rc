@@ -141,6 +141,10 @@ on post-fs
     chown radio radio /sys/class/capsense/calibrate
     chmod 0660 /sys/class/capsense/calibrate
 
+    # Setting Swappiness
+    write /proc/sys/vm/swappiness 100
+    setprop sys.sysctl.swappiness 100
+
 on post-fs-data
     setprop ro.vendor.build.fingerprint ${ro.product.vendor.brand}/${ro.product.vendor.name}/${ro.product.vendor.device}:${ro.vendor.build.version.release}/${ro.vendor.build.id}/${ro.vendor.build.version.incremental}:${ro.vendor.build.type}/${ro.vendor.build.tags}
 
@@ -402,6 +406,9 @@ on property:persist.vendor.qc.sub.rdump.on=*
 
 on property:ro.vendor.hw.dualsim=false
    setprop persist.radio.multisim.config ""
+
+on property:sys.sysctl.swappiness=*
+    write /proc/sys/vm/swappiness ${sys.sysctl.swappiness}
 
 service vendor.mbm_spy /vendor/bin/mbm_spy
     class late_start
