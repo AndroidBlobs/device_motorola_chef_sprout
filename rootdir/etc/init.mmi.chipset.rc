@@ -15,19 +15,20 @@ on moto-charger
     start vendor.charge_only_mode
     start vendor.batt_health
     start vendor.thermal-com
+    start system_suspend
 
 # Chipset-specific init settings
 service fingerprintd /system/bin/fingerprintd
     class late_start
     user system
-    group fingerp
+    group vendor_fingerp
 
 on post-fs
     # Change permission for fingerprint sensor
-    chown system mot_tcmd /sys/devices/soc/soc:fpc_fpc1020/nav
-    chown system mot_tcmd /sys/devices/soc/soc:fpc_fpc1020/dev_enable
-    chown system mot_tcmd /sys/devices/soc/soc:fpc_fpc1020/irq
-    chown system mot_tcmd /sys/devices/soc/soc:fpc_fpc1020/irq_cnt
+    chown system vendor_tcmd /sys/devices/soc/soc:fpc_fpc1020/nav
+    chown system vendor_tcmd /sys/devices/soc/soc:fpc_fpc1020/dev_enable
+    chown system vendor_tcmd /sys/devices/soc/soc:fpc_fpc1020/irq
+    chown system vendor_tcmd /sys/devices/soc/soc:fpc_fpc1020/irq_cnt
     chmod 0440 /sys/devices/soc/soc:fpc_fpc1020/irq_cnt
     # MOT_LED_CALIBRATION
     chown cameraserver /mnt/vendor/persist/camera/ledcal
